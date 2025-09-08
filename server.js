@@ -195,6 +195,80 @@ app.delete('/service_tickets/:id', (req, res) => {
   }
 });
 
+
+// Endpoint para criar alerta de escalação humana
+app.post('/api/alerts/human-needed', (req, res) => {
+  const data = readData();
+  if (!data.alerts) data.alerts = [];
+  
+  const newAlert = {
+    id: Math.max(0, ...data.alerts.map(a => a.id)) + 1,
+    guest_phone: req.body.guest_phone,
+    message: req.body.message,
+    priority: req.body.priority || 'high',
+    status: 'pending',
+    timestamp: req.body.timestamp || new Date().toISOString(),
+    assigned_to: req.body.assigned_to || 'gerencia',
+    escalation_reason: req.body.escalation_reason || 'Requer atenção humana'
+  };
+  
+  data.alerts.push(newAlert);
+  
+  if (writeData(data)) {
+    res.status(201).json(newAlert);
+  } else {
+    res.status(500).json({ error: 'Erro ao criar alerta' });
+  }
+});
+
+// Endpoint para funcionário assumir um alerta
+app.put('/alerts/:id/assign', (req, res) => {
+  const data = readData();
+  const alertIndex = data.alerts?.findIndex(a => a.id == req.params.id);
+  
+  if (alertIndex !== -1) {
+    data.alerts[alertIndex].status = 'assigned';
+    data.alerts[alertIndex].assigned_to = req.body.assigned_to;
+    data.alerts[alertIndex].assigned_at = new Date().toISOString();
+    
+    if (writeData(data)) {
+      res.json(data.alerts[alertIndex]);
+    } else {
+      res.status(500).json({ error: 'Erro ao atualizar alerta' });
+    }
+  } else {
+    res.status(404).json({ error: 'Alerta não encontrado' });
+  }
+});
+
+// Endpoint para resolver um alerta
+app.put('/alerts/:id/resolve', (req, res) => {
+  const data = readData();
+  const alertIndex = data.alerts?.findIndex(a => a.id == req.params.id);
+  
+  if (alertIndex !== -1) {
+    data.alerts[alertIndex].status = 'resolved';
+    data.alerts[alertIndex].resolution_notes = req.body.resolution_notes;
+    data.alerts[alertIndex].resolved_at = new Date().toISOString();
+    data.alerts[alertIndex].resolved_by = req.body.resolved_by;
+    
+    if (writeData(data)) {
+      res.json(data.alerts[alertIndex]);
+    } else {
+      res.status(500).json({ error: 'Erro ao resolver alerta' });
+    }
+  } else {
+    res.status(404).json({ error: 'Alerta não encontrado' });
+  }
+});
+
+// Endpoint para listar apenas alertas pendentes
+app.get('/alerts/pending', (req, res) => {
+  const data = readData();
+  const pendingAlerts = data.alerts?.filter(a => a.status === 'pending') || [];
+  res.json(pendingAlerts);
+});
+
 // Iniciar servidor
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Hotel API rodando na porta ${PORT}`);
