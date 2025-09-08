@@ -1,0 +1,95 @@
+{
+  "service_tickets": [
+    {
+      "id": 1001,
+      "guest_phone": "+5511999999999",
+      "service_type": "limpeza",
+      "room_number": "205",
+      "urgency": "media",
+      "details": "Limpeza completa do quarto",
+      "status": "completed",
+      "created_at": "2024-12-06T10:30:00Z",
+      "completed_at": "2024-12-06T11:15:00Z"
+    },
+    {
+      "id": 1002,
+      "guest_phone": "+5511888888888",
+      "service_type": "manutencao",
+      "room_number": "312",
+      "urgency": "alta",
+      "details": "Ar condicionado não funciona",
+      "status": "in_progress",
+      "created_at": "2024-12-06T14:20:00Z"
+    }
+  ],
+  "guest_interactions": [
+    {
+      "id": 1,
+      "guest_phone": "+5511999999999",
+      "message": "Preciso de limpeza no quarto 205",
+      "response": "Ticket criado com sucesso. Equipe chegará em 20 minutos.",
+      "interaction_type": "solicitacao_servico",
+      "timestamp": "2024-12-06T10:30:00Z",
+      "resolved_automatically": true,
+      "hotel_unit": "GrandResort Centro"
+    },
+    {
+      "id": 2,
+      "guest_phone": "+5511888888888",
+      "message": "AC do quarto 312 não funciona",
+      "response": "Equipe técnica foi notificada. Chegará em 15 minutos.",
+      "interaction_type": "problema_tecnico",
+      "timestamp": "2024-12-06T14:20:00Z",
+      "resolved_automatically": true,
+      "hotel_unit": "GrandResort Serra Verde"
+    }
+  ],
+  "crm_guests": [
+    {
+      "id": 1,
+      "phone": "+5511999999999",
+      "name": "João Silva",
+      "room": "205",
+      "checkin_date": "2024-12-05",
+      "last_interaction": "2024-12-06T10:30:00Z",
+      "interaction_count": 3,
+      "satisfaction_score": 5,
+      "preferences": ["limpeza_extra", "amenities_premium"],
+      "vip_status": false
+    },
+    {
+      "id": 2,
+      "phone": "+5511888888888",
+      "name": "Maria Santos",
+      "room": "312",
+      "checkin_date": "2024-12-04",
+      "last_interaction": "2024-12-06T14:20:00Z",
+      "interaction_count": 1,
+      "satisfaction_score": 4,
+      "preferences": [],
+      "vip_status": true
+    }
+  ],
+  "alerts": [
+    {
+      "id": 1,
+      "guest_phone": "+5511777777777",
+      "message": "Quero falar com o gerente",
+      "priority": "high",
+      "status": "pending",
+      "timestamp": "2024-12-06T13:45:00Z",
+      "assigned_to": "gerencia"
+    }
+  ],
+  "dashboard_metrics": [
+    {
+      "id": 1,
+      "date": "2024-12-06",
+      "total_interactions": 2847,
+      "automated_responses": 2073,
+      "tickets_created": 156,
+      "avg_response_time_seconds": 28,
+      "satisfaction_average": 4.6
+    }
+  ]
+}
