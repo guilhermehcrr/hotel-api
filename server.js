@@ -269,6 +269,15 @@ app.get('/alerts/pending', (req, res) => {
   res.json(pendingAlerts);
 });
 
+// Endpoint para listar apenas alertas que necessitam de atenção humana
+app.get('/api/alerts/human-needed', (req, res) => {
+     const data = readData();
+     const humanNeededAlerts = data.alerts?.filter(a => 
+       a.escalation_reason === 'Requer atenção humana' && a.status === 'pending'
+     ) || [];
+     res.json(humanNeededAlerts);
+   });
+
 // Iniciar servidor
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Hotel API rodando na porta ${PORT}`);
